@@ -6,8 +6,14 @@ export class User extends Document {
   @Prop({ unique: true })
   firstName: string;
 
-  @Prop({ unique: true })
-  lastName: string;
+  @Prop({ required: true })
+  institution: string;
+
+  @Prop({ required: true })
+  fieldOfStudy: string;
+
+  @Prop({ required: true })
+  bio: string;
 
   @Prop({ unique: true })
   email: string;
