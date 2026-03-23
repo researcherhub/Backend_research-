@@ -19,10 +19,14 @@ async function bootstrap() {
   app.use(helmet());
 
   const config = new DocumentBuilder()
-    .setTitle('Your API Title')
-    .setDescription('Your API description')
+    .setTitle('Backend Research API')
+    .setDescription(
+      'API for user authentication and management. Supports both mobile (Bearer tokens) and web (cookie-based) clients.',
+    )
     .setVersion('1.0')
     .addBearerAuth()
+    .addTag('auth', 'Authentication endpoints (login, refresh)')
+    .addTag('users', 'User management (requires authentication)')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
