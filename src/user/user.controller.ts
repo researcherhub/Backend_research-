@@ -4,10 +4,9 @@ import {
   Body,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './user.service';
 import { CreateUserBodyDto } from './dto/create.user.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('users')
 @Controller('users')
@@ -15,7 +14,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create user', description: 'Create a new user. Requires JWT authentication.' })
+  @ApiOperation({ summary: 'Create user', description: 'Create a new user.' })
   @ApiBody({ type: CreateUserBodyDto })
   @ApiResponse({ status: 201, description: 'User created successfully' })
   async createUser(@Body() body: CreateUserBodyDto) {
