@@ -15,7 +15,6 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create user', description: 'Create a new user. Requires JWT authentication.' })
   @ApiBody({ type: CreateUserBodyDto })
   @ApiResponse({ status: 201, description: 'User created successfully' })
