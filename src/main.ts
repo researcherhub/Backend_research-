@@ -16,7 +16,7 @@ async function bootstrap() {
     }),
   );
 
-  app.use(helmet())
+  app.use(helmet());
 
   const corsOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(',').map((o) => o.trim())
