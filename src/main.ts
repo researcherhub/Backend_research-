@@ -17,6 +17,13 @@ async function bootstrap() {
   );
 
   app.use(helmet());
+  const corsOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',').map((o) => o.trim())
+    : ['http://localhost:5175', 'https://researcher-hub.onrender.com'];
+  app.enableCors({
+    origin: corsOrigins,
+    credentials: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Backend Research API')
