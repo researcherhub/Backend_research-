@@ -15,7 +15,6 @@ export class UsersController {
 
   @Post()
   @ApiOperation({ summary: 'Create user', description: 'Create a new user.' })
-  @ApiBody({ type: CreateUserBodyDto })
   @ApiResponse({ status: 201, description: 'User created successfully' })
   async createUser(@Body() body: CreateUserBodyDto) {
     const user = await this.usersService.create(body.createUserDto);
