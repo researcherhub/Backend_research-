@@ -18,7 +18,6 @@ export class UsersController {
   @ApiOperation({ summary: 'Create user', description: 'Create a new user. Requires JWT authentication.' })
   @ApiBody({ type: CreateUserBodyDto })
   @ApiResponse({ status: 201, description: 'User created successfully' })
-  @ApiResponse({ status: 401, description: 'Unauthorized - valid JWT required' })
   async createUser(@Body() body: CreateUserBodyDto) {
     const user = await this.usersService.create(body.createUserDto);
 
