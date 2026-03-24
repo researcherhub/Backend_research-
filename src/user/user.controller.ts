@@ -14,7 +14,6 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Create user', description: 'Create a new user. Requires JWT authentication.' })
