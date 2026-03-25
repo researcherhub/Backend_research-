@@ -34,7 +34,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .addTag('auth', 'Authentication endpoints (login, refresh)')
-    // .addTag('users', 'User management endpoints')
+    .addTag('users', 'User signup and profile')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
