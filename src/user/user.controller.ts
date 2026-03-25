@@ -6,7 +6,7 @@ import {
   Get,
   Param,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './user.service';
 import { CreateUserBodyDto } from './dto/create.user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
