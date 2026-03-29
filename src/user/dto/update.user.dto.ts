@@ -1,40 +1,29 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsArray, IsNumber, IsString } from "class-validator";
 
-export class UpdateUserDto {
-  @ApiPropertyOptional({ example: 'Tommy Adeoye', description: 'User full name' })
-  @IsOptional()
-  @IsString()
-  fullName?: string;
-
-  @ApiPropertyOptional({ example: 'Computer Science', description: 'User field of study' })
-  @IsOptional()
+export class OnboardingDto {
+  @ApiProperty({ example: 'Computer Science', description: 'User field of study' })
   @IsString()
   fieldOfStudy?: string;
 
-  @ApiPropertyOptional({ example: 'I am a passionate researcher in AI.', description: 'User bio' })
-  @IsOptional()
+  @ApiProperty({ example: 'I am a passionate researcher in AI.', description: 'User bio' })
   @IsString()
   bio?: string;
 
-  @ApiPropertyOptional({ example: 'U I', description: 'University Of Ibad' })
-  @IsOptional()
+  @ApiProperty({ example: ['Machine Learning', 'Data Science'], description: 'User areas of interest' })
+  @IsArray()
+  @IsString({ each: true })
+  areaOfInterest?: string[];
+
+  @ApiProperty({ example: 'My research focuses on developing novel algorithms for natural language processing.', description: 'User brief research focus' })
+  @IsString()
+  briefResearchFocus?: string;
+
+  @ApiProperty({ example: 2023, description: 'User year of graduation' }) 
+  @IsNumber()
+  yearOfGraduation?: number;
+  
+  @ApiProperty({ example: 'University of Ibadan', description: 'User institution' })
   @IsString()
   institution?: string;
-
-  @ApiPropertyOptional({ example: 'john.doe@example.com', description: 'User email address' })
-  @IsOptional()
-  @IsEmail()
-  email?: string;
-
-  @ApiPropertyOptional({ example: 'newpassword123', description: 'User password (min 8 characters)', minLength: 8 })
-  @IsOptional()
-  @IsString()
-  @MinLength(8)
-  password?: string;
-
-  @ApiPropertyOptional({ description: 'Hashed refresh token (internal use)' })
-  @IsOptional()
-  @IsString()
-  refreshTokenHash?: string;
 }

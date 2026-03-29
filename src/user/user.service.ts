@@ -1,10 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/schema/user.schema';
-import { CreateUserDto } from './dto/create.user.dto';
-import { UpdateUserDto } from './dto/update.user.dto';
+import {
+  SignupDto,
+  ResearchStepDto,
+  AcademicStepDto,
+} from './dto/create.user.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,13 +20,26 @@ export class UsersService {
     private readonly userModel: Model<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+  // ✅ SIGNUP
+  async signup(signupDto: SignupDto): Promise<User> {
+    const { email, password, fullName } = signupDto;
 
-    return this.userModel.create({
-        ...createUserDto,
+    const existingUser = await this.userModel.findOne({ email });
+    if (existingUser) {
+      throw new BadRequestException('Email already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await this.userModel.create({
+      email,
+      fullName,
       password: hashedPassword,
+      onboardingStep: 1,
+      onboardingCompleted: false,
     });
+
+    return user;
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -30,14 +50,48 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
-  async updateRefreshToken(
-    userId: any,
-    updateUserDto: UpdateUserDto
-  ): Promise<void> {
-    await this.userModel.updateOne(
-      { _id: userId },
-      { refreshTokenHash: updateUserDto.refreshTokenHash },
-    );
+  async updateResearchStep(userId: string, dto: ResearchStepDto) {
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (user.onboardingStep !== 1) {
+      throw new BadRequestException('Invalid onboarding step');
+    }
+
+    user.areaOfInterest = dto.areaOfInterest;
+    user.briefResearchFocus = dto.briefResearchFocus;
+
+    user.onboardingStep = 2;
+
+    await user.save();
+
+    return user;
+  }
+
+  async updateAcademicStep(userId: string, dto: AcademicStepDto) {
+    const user = await this.userModel.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (user.onboardingStep !== 2) {
+      throw new BadRequestException('Complete previous step first');
+    }
+
+    user.fieldOfStudy = dto.fieldOfStudy;
+    user.institution = dto.institution;
+    user.bio = dto.bio;
+
+    user.onboardingStep = 3;
+    user.onboardingCompleted = true;
+
+    await user.save();
+
+    return user;
   }
 
   async clearRefreshToken(userId: string): Promise<void> {

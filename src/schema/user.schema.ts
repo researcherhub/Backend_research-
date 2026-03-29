@@ -3,26 +3,38 @@ import { Document } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class User extends Document {
-  @Prop({ unique: true })
+  @Prop({ required: true })
   fullName: string;
 
-  @Prop({ required: true })
-  institution: string;
-
-  @Prop({ required: true })
-  fieldOfStudy: string;
-
-  @Prop({ required: true })
-  bio: string;
-
-  @Prop({ unique: true })
-  email: string;
+  @Prop()
+  institution?: string;
 
   @Prop()
+  fieldOfStudy?: string;
+
+  @Prop()
+  bio?: string;
+
+  @Prop({ required: true, unique: true })
+  email: string;
+
+  @Prop({ required: true })
   password: string;
 
   @Prop()
   refreshTokenHash?: string;
+
+  @Prop({ default: false })
+  onboardingCompleted: boolean;
+
+  @Prop({ default: 1 })
+  onboardingStep: number;
+
+  @Prop({ type: [String], default: [] })
+  areaOfInterest: string[];
+
+  @Prop()
+  briefResearchFocus?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
