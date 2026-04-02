@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/schema/user.schema';
 import {
@@ -92,6 +92,13 @@ export class UsersService {
     await user.save();
 
     return user;
+  }
+
+  async updateRefreshToken(
+    userId: string | Types.ObjectId,
+    refreshTokenHash: string,
+  ): Promise<void> {
+    await this.userModel.updateOne({ _id: userId }, { refreshTokenHash });
   }
 
   async clearRefreshToken(userId: string): Promise<void> {

@@ -35,6 +35,10 @@ async function bootstrap() {
     .addBearerAuth()
     .addTag('auth', 'Authentication endpoints (login, refresh)')
     .addTag('users', 'User signup and profile')
+    .addTag(
+      'onboarding',
+      'Multi-step onboarding: signup → research interests → academic profile',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

@@ -21,26 +21,40 @@ export class SignupDto {
 }
 
 export class ResearchStepDto {
+  @ApiProperty({
+    example: ['AI', 'Blockchain'],
+    description: 'Research areas of interest (at least one)',
+    type: [String],
+  })
   @IsArray()
   @IsString({ each: true })
   @IsNotEmpty()
   areaOfInterest: string[];
 
+  @ApiProperty({
+    example: 'AI in decentralized finance',
+    description: 'Short summary of research focus',
+  })
   @IsString()
   @IsNotEmpty()
   briefResearchFocus: string;
 }
 
-
 export class AcademicStepDto {
+  @ApiProperty({ example: 'Computer Science', description: 'Primary field of study' })
   @IsString()
   @IsNotEmpty()
   fieldOfStudy: string;
 
+  @ApiProperty({ example: 'University of Ibadan', description: 'Institution name' })
   @IsString()
   @IsNotEmpty()
   institution: string;
 
+  @ApiProperty({
+    example: 'AI enthusiast and backend developer',
+    description: 'Short professional / research bio',
+  })
   @IsString()
   @IsNotEmpty()
   bio: string;
